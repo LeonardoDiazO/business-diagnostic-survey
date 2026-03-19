@@ -61,7 +61,8 @@
     <label class="opt"><input type="checkbox" name="tipo" value="Restaurante / Cafetería / Comidas" onchange="updateProgress()"><span>Restaurante / Cafetería / Comidas</span></label>
     <label class="opt"><input type="checkbox" name="tipo" value="Servicios (peluquería, taller, belleza, salud)" onchange="updateProgress()"><span>Servicios (peluquería, taller, belleza, salud)</span></label>
     <label class="opt"><input type="checkbox" name="tipo" value="Distribución / Mayorista / Proveedor" onchange="updateProgress()"><span>Distribución / Mayorista / Proveedor</span></label>
-    <label class="opt"><input type="checkbox" name="tipo" value="Otro tipo de negocio" onchange="updateProgress()"><span>Otro tipo de negocio</span></label>
+    <label class="opt"><input type="checkbox" name="tipo" value="Otro tipo de negocio" onchange="toggleOtro('otroTipo', this);updateProgress()"><span>Otro tipo de negocio</span></label>
+    <input class="otro-input" type="text" id="otroTipo" placeholder="¿Cuál tipo de negocio?" oninput="updateProgress()">
   </div>
 
   <!-- P2: Años en el negocio -->
@@ -101,7 +102,8 @@
     <label class="opt"><input type="checkbox" name="dolor" value="Manejar empleados: horarios, pagos, tareas" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Manejar empleados: horarios, pagos, tareas</span></label>
     <label class="opt"><input type="checkbox" name="dolor" value="No tengo tiempo — todo depende de mí" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>No tengo tiempo — todo depende de mí</span></label>
     <label class="opt"><input type="checkbox" name="dolor" value="No sé cuánto gano ni cuánto pierdo realmente" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>No sé cuánto gano ni cuánto pierdo realmente</span></label>
-    <label class="opt"><input type="checkbox" name="dolor" value="Otro problema" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Otro problema</span></label>
+    <label class="opt"><input type="checkbox" name="dolor" value="Otro problema" onchange="limitCheck(this,'dolor',2);toggleOtro('otroDolorInput', this);updateProgress()"><span>Otro problema</span></label>
+    <input class="otro-input" type="text" id="otroDolorInput" placeholder="¿Cuál es ese problema?" oninput="updateProgress()">
   </div>
 
   <!-- P5: Control actual -->

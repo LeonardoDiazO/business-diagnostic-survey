@@ -16,6 +16,18 @@ window.addEventListener('online',  checkOnline);
 window.addEventListener('offline', checkOnline);
 checkOnline();
 
+// ── Mostrar / ocultar campo "Otro" ──
+function toggleOtro(inputId, checkbox) {
+  const input = document.getElementById(inputId);
+  if (checkbox.checked) {
+    input.classList.add('visible');
+    input.focus();
+  } else {
+    input.classList.remove('visible');
+    input.value = '';
+  }
+}
+
 // ── Limitar checkboxes ──
 function limitCheck(el, name, max) {
   const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
@@ -61,10 +73,16 @@ function updateProgress() {
 // ── Recopilar respuestas ──
 function recopilar() {
   return {
-    tipo:    [...document.querySelectorAll('input[name="tipo"]:checked')].map(e => e.value).join(' / ') || '—',
+    tipo:    [...document.querySelectorAll('input[name="tipo"]:checked')].map(e => {
+               const txt = document.getElementById('otroTipo')?.value.trim();
+               return e.value === 'Otro tipo de negocio' && txt ? `Otro: ${txt}` : e.value;
+             }).join(' / ') || '—',
     anos:    document.querySelector('input[name="anos"]:checked')?.value || '—',
     tamano:  document.querySelector('input[name="tamano"]:checked')?.value || '—',
-    dolor:   [...document.querySelectorAll('input[name="dolor"]:checked')].map(e => e.value).join(' / ') || '—',
+    dolor:   [...document.querySelectorAll('input[name="dolor"]:checked')].map(e => {
+               const txt = document.getElementById('otroDolorInput')?.value.trim();
+               return e.value === 'Otro problema' && txt ? `Otro: ${txt}` : e.value;
+             }).join(' / ') || '—',
     control: document.querySelector('input[name="control"]:checked')?.value || '—',
     tech:    document.querySelector('input[name="tech"]:checked')?.value || '—',
     varita:  document.getElementById('varita').value.trim() || '—',
@@ -240,6 +258,13 @@ function nuevaEncuesta() {
   // Desmarcar todos los checkboxes y radios
   document.querySelectorAll('input[type=checkbox], input[type=radio]').forEach(el => {
     el.checked = false;
+  });
+
+  // Ocultar campos "Otro" y limpiarlos
+  ['otroTipo','otroDolorInput'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = '';
+    el.classList.remove('visible');
   });
 
   // Limpiar textarea y campos de contacto

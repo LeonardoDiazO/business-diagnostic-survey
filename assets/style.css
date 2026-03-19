@@ -216,6 +216,23 @@ body {
 .opt span { font-size: 13px; color: #1a1a1a; line-height: 1.4; }
 .opt.selected span { color: #1D5C35; }
 
+/* ── Campo "Otro" desplegable ── */
+.otro-input {
+  display: none;
+  width: 100%;
+  border: 1px solid #E94560;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff5f7;
+  color: #1a1a1a;
+  outline: none;
+  margin-top: 6px;
+}
+.otro-input:focus { background: #fff; }
+.otro-input.visible { display: block; }
+
 /* ── Textarea ── */
 textarea {
   width: 100%;
