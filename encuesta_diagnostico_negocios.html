@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico de Negocio</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <h1>Diagnóstico de negocio</h1>
+        <p>Te ayuda a mejorar — solo 5 minutos</p>
+      </div>
+      <button class="btn-historial" onclick="toggleHistorial()" id="btnHistorial">
+        <span id="contadorBadge">0</span>
+        <span class="historial-label">encuestas</span>
+      </button>
+    </div>
+    <span class="badge">8 preguntas clave</span>
+  </div>
+
+  <!-- PANEL HISTORIAL -->
+  <div class="historial-panel" id="historialPanel" style="display:none">
+    <div class="historial-header">
+      <span id="historialTitulo">Encuestas registradas</span>
+      <button class="historial-close" onclick="toggleHistorial()">✕</button>
+    </div>
+    <div id="historialLista"></div>
+  </div>
+
+  <!-- ALERTA OFFLINE -->
+  <div class="offline-badge" id="offlineBadge">
+    Sin conexión — tus respuestas se guardarán cuando vuelva el internet
+  </div>
+
+  <!-- PROGRESO -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Tu avance</span>
+      <span id="progressText">0 de 8</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="pbar" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- ══ SECCIÓN A: PERFIL ══ -->
+  <div class="section-label">A · Perfil del negocio</div>
+
+  <!-- P1: Tipo de negocio -->
+  <div class="card" id="c1">
+    <div class="q-num">1 de 8</div>
+    <div class="q-text">¿Qué tipo de negocio tienes?</div>
+    <div class="q-hint">Puedes marcar más de una si aplica</div>
+    <label class="opt"><input type="checkbox" name="tipo" value="Tienda / Venta de productos" onchange="updateProgress()"><span>Tienda / Venta de productos</span></label>
+    <label class="opt"><input type="checkbox" name="tipo" value="Restaurante / Cafetería / Comidas" onchange="updateProgress()"><span>Restaurante / Cafetería / Comidas</span></label>
+    <label class="opt"><input type="checkbox" name="tipo" value="Servicios (peluquería, taller, belleza, salud)" onchange="updateProgress()"><span>Servicios (peluquería, taller, belleza, salud)</span></label>
+    <label class="opt"><input type="checkbox" name="tipo" value="Distribución / Mayorista / Proveedor" onchange="updateProgress()"><span>Distribución / Mayorista / Proveedor</span></label>
+    <label class="opt"><input type="checkbox" name="tipo" value="Otro tipo de negocio" onchange="updateProgress()"><span>Otro tipo de negocio</span></label>
+  </div>
+
+  <!-- P2: Años en el negocio -->
+  <div class="card" id="c2">
+    <div class="q-num">2 de 8</div>
+    <div class="q-text">¿Cuánto tiempo lleva abierto tu negocio?</div>
+    <div class="q-hint">Experiencia = conoces bien el problema</div>
+    <label class="opt"><input type="radio" name="anos" value="Menos de 1 año" onchange="updateProgress()"><span>Menos de 1 año (empezando)</span></label>
+    <label class="opt"><input type="radio" name="anos" value="1 a 3 años" onchange="updateProgress()"><span>1 a 3 años</span></label>
+    <label class="opt"><input type="radio" name="anos" value="3 a 10 años" onchange="updateProgress()"><span>3 a 10 años</span></label>
+    <label class="opt"><input type="radio" name="anos" value="Más de 10 años" onchange="updateProgress()"><span>Más de 10 años (negocio establecido)</span></label>
+  </div>
+
+  <!-- P3: Tamaño equipo -->
+  <div class="card" id="c3">
+    <div class="q-num">3 de 8</div>
+    <div class="q-text">¿Cuántas personas trabajan en tu negocio?</div>
+    <div class="q-hint">Cuenta todos: empleados, familiares, socios</div>
+    <label class="opt"><input type="radio" name="tamano" value="Solo yo" onchange="updateProgress()"><span>Solo yo (sin empleados)</span></label>
+    <label class="opt"><input type="radio" name="tamano" value="2 a 5 personas" onchange="updateProgress()"><span>2 a 5 personas</span></label>
+    <label class="opt"><input type="radio" name="tamano" value="6 a 20 personas" onchange="updateProgress()"><span>6 a 20 personas</span></label>
+    <label class="opt"><input type="radio" name="tamano" value="Más de 20 personas" onchange="updateProgress()"><span>Más de 20 personas</span></label>
+  </div>
+
+  <!-- ══ SECCIÓN B: EL PROBLEMA ══ -->
+  <div class="section-label">B · Lo que más te estresa</div>
+
+  <!-- P4: Dolor principal ⭐ -->
+  <div class="card" id="c4">
+    <div class="q-num">4 de 8 ⭐ La más importante</div>
+    <div class="q-text">¿Qué parte de tu negocio te quita más tiempo o te genera más dolores de cabeza?</div>
+    <div class="q-hint">Marca máximo 2 — sé honesto/a, esto nos ayuda a ayudarte</div>
+    <label class="opt"><input type="checkbox" name="dolor" value="Controlar el dinero: caja, pagos, deudas" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Controlar el dinero: caja, pagos, deudas</span></label>
+    <label class="opt"><input type="checkbox" name="dolor" value="Inventario: saber qué tengo y qué me falta" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Inventario: saber qué tengo y qué me falta</span></label>
+    <label class="opt"><input type="checkbox" name="dolor" value="Organizar pedidos, turnos o citas de clientes" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Organizar pedidos, turnos o citas de clientes</span></label>
+    <label class="opt"><input type="checkbox" name="dolor" value="Clientes que me deben / hacer cobros" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Clientes que me deben / hacer cobros</span></label>
+    <label class="opt"><input type="checkbox" name="dolor" value="Manejar empleados: horarios, pagos, tareas" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Manejar empleados: horarios, pagos, tareas</span></label>
+    <label class="opt"><input type="checkbox" name="dolor" value="No tengo tiempo — todo depende de mí" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>No tengo tiempo — todo depende de mí</span></label>
+    <label class="opt"><input type="checkbox" name="dolor" value="No sé cuánto gano ni cuánto pierdo realmente" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>No sé cuánto gano ni cuánto pierdo realmente</span></label>
+    <label class="opt"><input type="checkbox" name="dolor" value="Otro problema" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Otro problema</span></label>
+  </div>
+
+  <!-- P5: Control actual -->
+  <div class="card" id="c5">
+    <div class="q-num">5 de 8</div>
+    <div class="q-text">¿Cómo llevas el control de tu negocio hoy?</div>
+    <div class="q-hint">Sin importar si funciona bien o mal — solo queremos saber</div>
+    <label class="opt"><input type="radio" name="control" value="De memoria / en la cabeza" onchange="updateProgress()"><span>De memoria / en la cabeza</span></label>
+    <label class="opt"><input type="radio" name="control" value="Cuaderno o libreta" onchange="updateProgress()"><span>Cuaderno o libreta</span></label>
+    <label class="opt"><input type="radio" name="control" value="Excel o Google Sheets" onchange="updateProgress()"><span>Excel o Google Sheets</span></label>
+    <label class="opt"><input type="radio" name="control" value="Una app o programa (¿cuál?)" onchange="updateProgress()"><span>Una app o programa</span></label>
+    <label class="opt"><input type="radio" name="control" value="No llevo ningún control" onchange="updateProgress()"><span>No llevo ningún control</span></label>
+  </div>
+
+  <!-- ══ SECCIÓN C: TECNOLOGÍA ══ -->
+  <div class="section-label">C · Tecnología y disposición</div>
+
+  <!-- P6: Comodidad con tecnología -->
+  <div class="card" id="c6">
+    <div class="q-num">6 de 8</div>
+    <div class="q-text">¿Te sientes cómodo/a usando el celular para cosas del negocio?</div>
+    <div class="q-hint">Esto nos dice qué tan sencilla debe ser la solución</div>
+    <label class="opt"><input type="radio" name="tech" value="Sí — uso WhatsApp, redes y apps sin problema" onchange="updateProgress()"><span>Sí — uso WhatsApp, redes y apps sin problema</span></label>
+    <label class="opt"><input type="radio" name="tech" value="Más o menos — uso lo básico" onchange="updateProgress()"><span>Más o menos — uso lo básico</span></label>
+    <label class="opt"><input type="radio" name="tech" value="Prefiero no depender del celular" onchange="updateProgress()"><span>Prefiero no depender del celular</span></label>
+  </div>
+
+  <!-- P7: Varita mágica ✏️ -->
+  <div class="card" id="c7">
+    <div class="q-num">7 de 8 ✏️ Tu voz</div>
+    <div class="q-text">Si tuvieras una varita mágica, ¿qué le quitarías o mejorarías a tu negocio HOY?</div>
+    <div class="q-hint">Escribe en tus propias palabras — no hay respuesta incorrecta</div>
+    <textarea id="varita" placeholder="Ej: Que no se me olvide quién me debe, que sepa cuánto vendí hoy, que mis empleados lleguen a tiempo..." onkeyup="updateProgress()"></textarea>
+  </div>
+
+  <!-- P8: Disposición de pago -->
+  <div class="card" id="c8">
+    <div class="q-num">8 de 8</div>
+    <div class="q-text">¿Pagarías por una app que te resuelva ese problema?</div>
+    <div class="q-hint">Total honestidad — esto no es una venta, es para diseñar bien la solución</div>
+    <label class="opt"><input type="radio" name="pago" value="Sí, si realmente me ahorra tiempo o dinero" onchange="updateProgress()"><span>Sí, si realmente me ahorra tiempo o dinero</span></label>
+    <label class="opt"><input type="radio" name="pago" value="Depende del precio (menos de $20.000/mes estaría bien)" onchange="updateProgress()"><span>Depende del precio (menos de $20.000/mes estaría bien)</span></label>
+    <label class="opt"><input type="radio" name="pago" value="Preferiría que fuera gratis" onchange="updateProgress()"><span>Preferiría que fuera gratis</span></label>
+    <label class="opt"><input type="radio" name="pago" value="No lo he pensado todavía" onchange="updateProgress()"><span>No lo he pensado todavía</span></label>
+  </div>
+
+  <!-- ══ CONTACTO (opcional) ══ -->
+  <div class="section-label">Datos de contacto (opcional)</div>
+  <div class="card" style="border-left-color: #ccc;">
+    <div class="q-hint" style="margin-bottom: 12px;">Solo si quieres que te avisemos cuando esté lista la app — no compartimos tus datos</div>
+    <div class="contact-grid">
+      <div class="field-group">
+        <label>Tu nombre</label>
+        <input type="text" id="f_nombre" placeholder="Ej: Carlos">
+      </div>
+      <div class="field-group">
+        <label>Nombre del negocio</label>
+        <input type="text" id="f_negocio" placeholder="Ej: Tienda Luz">
+      </div>
+      <div class="field-group">
+        <label>WhatsApp</label>
+        <input type="tel" id="f_cel" placeholder="300 000 0000">
+      </div>
+      <div class="field-group">
+        <label>Barrio / Ciudad</label>
+        <input type="text" id="f_ciudad" placeholder="Ej: Barranquilla">
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN -->
+  <button class="btn-save" id="btnGuardar" onclick="guardar()">
+    Guardar respuestas
+  </button>
+
+  <!-- MENSAJES DE ESTADO -->
+  <div class="status-msg ok" id="msgOk">
+    ✅ <strong>Respuestas guardadas.</strong> ¡Gracias por tu tiempo! Con esto podemos diseñar algo que realmente te ayude.
+  </div>
+  <div class="status-msg pending" id="msgPending">
+    ⏳ <strong>Sin conexión.</strong> Tus respuestas están guardadas en este teléfono. Se enviarán automáticamente cuando vuelva el internet.
+  </div>
+  <div class="status-msg error" id="msgError">
+    ⚠️ <strong>Algo salió mal.</strong> Revisa la conexión e intenta de nuevo. Tus respuestas no se perdieron.
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="summary" id="summary">
+    <h3>Resumen de respuestas</h3>
+    <div id="summary-content"></div>
+    <button class="btn-nueva" onclick="nuevaEncuesta()">+ Nueva encuesta</button>
+  </div>
+
+</div><!-- /wrap -->
+
+<script src="assets/app.js"></script>
+</body>
+</html>

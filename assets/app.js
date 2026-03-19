@@ -1,0 +1,262 @@
+// ══════════════════════════════════════════════════
+//  CONFIGURACIÓN — Pega aquí la URL de tu Apps Script
+// ══════════════════════════════════════════════════
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwg1vtXH64ePefhiLzWdvW7Q971-8lHtG7vEJu6_k8Bu1Bc9ujRHMmBZXwdcjRpbcfK9w/exec';
+// Ejemplo: 'https://script.google.com/macros/s/AKfycby.../exec'
+// ══════════════════════════════════════════════════
+
+const TOTAL = 8;
+
+// ── Detectar offline ──
+function checkOnline() {
+  document.getElementById('offlineBadge').style.display =
+    navigator.onLine ? 'none' : 'block';
+}
+window.addEventListener('online',  checkOnline);
+window.addEventListener('offline', checkOnline);
+checkOnline();
+
+// ── Limitar checkboxes ──
+function limitCheck(el, name, max) {
+  const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
+  if (checked.length > max) {
+    el.checked = false;
+    return;
+  }
+  updateOptStyles();
+}
+
+// ── Actualizar estilos de opciones ──
+function updateOptStyles() {
+  document.querySelectorAll('.opt').forEach(opt => {
+    const inp = opt.querySelector('input');
+    opt.classList.toggle('selected', inp && inp.checked);
+  });
+}
+
+// ── Barra de progreso ──
+function updateProgress() {
+  updateOptStyles();
+
+  const checks = [
+    document.querySelectorAll('input[name="tipo"]:checked').length > 0,
+    !!document.querySelector('input[name="anos"]:checked'),
+    !!document.querySelector('input[name="tamano"]:checked'),
+    document.querySelectorAll('input[name="dolor"]:checked').length > 0,
+    !!document.querySelector('input[name="control"]:checked'),
+    !!document.querySelector('input[name="tech"]:checked'),
+    document.getElementById('varita').value.trim().length > 5,
+    !!document.querySelector('input[name="pago"]:checked'),
+  ];
+
+  const done = checks.filter(Boolean).length;
+  document.getElementById('pbar').style.width = Math.round((done / TOTAL) * 100) + '%';
+  document.getElementById('progressText').textContent = `${done} de ${TOTAL}`;
+
+  ['c1','c2','c3','c4','c5','c6','c7','c8'].forEach((id, i) => {
+    document.getElementById(id).classList.toggle('answered', checks[i]);
+  });
+}
+
+// ── Recopilar respuestas ──
+function recopilar() {
+  return {
+    tipo:    [...document.querySelectorAll('input[name="tipo"]:checked')].map(e => e.value).join(' / ') || '—',
+    anos:    document.querySelector('input[name="anos"]:checked')?.value || '—',
+    tamano:  document.querySelector('input[name="tamano"]:checked')?.value || '—',
+    dolor:   [...document.querySelectorAll('input[name="dolor"]:checked')].map(e => e.value).join(' / ') || '—',
+    control: document.querySelector('input[name="control"]:checked')?.value || '—',
+    tech:    document.querySelector('input[name="tech"]:checked')?.value || '—',
+    varita:  document.getElementById('varita').value.trim() || '—',
+    pago:    document.querySelector('input[name="pago"]:checked')?.value || '—',
+    nombre:  document.getElementById('f_nombre').value.trim(),
+    negocio: document.getElementById('f_negocio').value.trim(),
+    cel:     document.getElementById('f_cel').value.trim(),
+    ciudad:  document.getElementById('f_ciudad').value.trim(),
+  };
+}
+
+// ── Mostrar resumen en pantalla ──
+function mostrarResumen(data) {
+  const labels = [
+    { q: 'Tipo de negocio',      a: data.tipo    },
+    { q: 'Tiempo en el mercado', a: data.anos    },
+    { q: 'Tamaño del equipo',    a: data.tamano  },
+    { q: 'Principal problema',   a: data.dolor   },
+    { q: 'Control actual',       a: data.control },
+    { q: 'Comodidad tecnología', a: data.tech    },
+    { q: 'Varita mágica',        a: data.varita  },
+    { q: 'Disposición de pago',  a: data.pago    },
+  ];
+  if (data.nombre || data.negocio || data.cel) {
+    labels.push({ q: 'Contacto', a: [data.nombre, data.negocio, data.cel, data.ciudad].filter(Boolean).join(' · ') });
+  }
+
+  const html = labels.map(i =>
+    `<div class="summary-item"><strong>${i.q}:</strong> ${i.a}</div>`
+  ).join('');
+
+  document.getElementById('summary-content').innerHTML = html;
+  document.getElementById('summary').style.display = 'block';
+  document.getElementById('summary').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Guardar en localStorage (respaldo local) ──
+function guardarLocal(data) {
+  const pendientes = JSON.parse(localStorage.getItem('encuestas_pendientes') || '[]');
+  pendientes.push({ data, ts: Date.now() });
+  localStorage.setItem('encuestas_pendientes', JSON.stringify(pendientes));
+}
+
+// ── Enviar pendientes cuando vuelva internet ──
+window.addEventListener('online', () => {
+  const pendientes = JSON.parse(localStorage.getItem('encuestas_pendientes') || '[]');
+  if (pendientes.length === 0) return;
+  pendientes.forEach(item => enviar(item.data));
+  localStorage.removeItem('encuestas_pendientes');
+});
+
+// ── Enviar al servidor (Apps Script) ──
+async function enviar(data) {
+  if (SCRIPT_URL === 'PEGAR_AQUI_LA_URL_DE_APPS_SCRIPT') {
+    console.warn('⚠️ Configura SCRIPT_URL en assets/app.js');
+    return false;
+  }
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Google Apps Script requiere no-cors
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// ── Guardar principal ──
+async function guardar() {
+  const btn = document.getElementById('btnGuardar');
+  btn.disabled = true;
+  btn.textContent = 'Guardando...';
+
+  ['msgOk','msgPending','msgError'].forEach(id =>
+    document.getElementById(id).style.display = 'none'
+  );
+
+  const data = recopilar();
+
+  // Siempre guardar en historial local (para el contador y la vista)
+  guardarHistorial(data);
+
+  if (!navigator.onLine) {
+    guardarLocal(data);
+    document.getElementById('msgPending').style.display = 'block';
+    mostrarResumen(data);
+  } else {
+    const ok = await enviar(data);
+    if (ok || SCRIPT_URL === 'PEGAR_AQUI_LA_URL_DE_APPS_SCRIPT') {
+      document.getElementById('msgOk').style.display = 'block';
+      mostrarResumen(data);
+    } else {
+      guardarLocal(data);
+      document.getElementById('msgError').style.display = 'block';
+      mostrarResumen(data);
+    }
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Guardar respuestas';
+  document.getElementById('btnGuardar').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── Historial: guardar encuesta completada ──
+function guardarHistorial(data) {
+  const historial = JSON.parse(localStorage.getItem('encuestas_historial') || '[]');
+  historial.push({ data, ts: Date.now() });
+  localStorage.setItem('encuestas_historial', JSON.stringify(historial));
+  actualizarContador();
+}
+
+// ── Historial: actualizar el número en el header ──
+function actualizarContador() {
+  const historial = JSON.parse(localStorage.getItem('encuestas_historial') || '[]');
+  document.getElementById('contadorBadge').textContent = historial.length;
+}
+
+// ── Historial: mostrar / ocultar panel ──
+function toggleHistorial() {
+  const panel = document.getElementById('historialPanel');
+  const abierto = panel.style.display !== 'none';
+  if (abierto) {
+    panel.style.display = 'none';
+  } else {
+    renderHistorial();
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ── Historial: renderizar lista ──
+function renderHistorial() {
+  const historial = JSON.parse(localStorage.getItem('encuestas_historial') || '[]');
+  const lista = document.getElementById('historialLista');
+  const titulo = document.getElementById('historialTitulo');
+
+  titulo.textContent = `${historial.length} encuesta${historial.length !== 1 ? 's' : ''} registrada${historial.length !== 1 ? 's' : ''}`;
+
+  if (historial.length === 0) {
+    lista.innerHTML = '<div class="hist-empty">Aún no hay encuestas guardadas</div>';
+    return;
+  }
+
+  lista.innerHTML = [...historial].reverse().map((entry, i) => {
+    const num = historial.length - i;
+    const hora = new Date(entry.ts).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    const fecha = new Date(entry.ts).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' });
+    const d = entry.data;
+    const nombre = d.negocio || d.nombre || '—';
+    return `
+      <div class="hist-item">
+        <div class="hist-item-header">
+          <span class="hist-num">#${num}</span>
+          <span class="hist-hora">${fecha} · ${hora}</span>
+        </div>
+        <div class="hist-negocio">${nombre}</div>
+        <div class="hist-dolor">
+          <strong>Tipo:</strong> ${d.tipo} &nbsp;·&nbsp;
+          <strong>Dolor:</strong> ${d.dolor}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// Inicializar contador al cargar la página
+actualizarContador();
+
+// ── Nueva encuesta: limpia todo el formulario ──
+function nuevaEncuesta() {
+  // Desmarcar todos los checkboxes y radios
+  document.querySelectorAll('input[type=checkbox], input[type=radio]').forEach(el => {
+    el.checked = false;
+  });
+
+  // Limpiar textarea y campos de contacto
+  document.getElementById('varita').value = '';
+  ['f_nombre','f_negocio','f_cel','f_ciudad'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+
+  // Ocultar resumen y mensajes
+  document.getElementById('summary').style.display = 'none';
+  ['msgOk','msgPending','msgError'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+
+  // Resetear progreso y estilos de tarjetas
+  updateProgress();
+
+  // Volver arriba
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
