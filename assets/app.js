@@ -314,12 +314,15 @@ function renderHistorial() {
 }
 
 // ── Permitir desmarcar botones de rating (clic en el mismo = quitar) ──
-document.querySelectorAll('.rating-btn input[type=radio]').forEach(radio => {
-  radio.addEventListener('mousedown', function() {
-    this._preChecked = this.checked;
+// mousedown/touchstart disparan sobre el <label>, no sobre el <input>,
+// por eso se escuchan en .rating-btn y se guarda el estado en el radio interno.
+document.querySelectorAll('.rating-btn').forEach(label => {
+  const radio = label.querySelector('input[type=radio]');
+  label.addEventListener('mousedown', () => {
+    radio._preChecked = radio.checked;
   });
-  radio.addEventListener('touchstart', function() {
-    this._preChecked = this.checked;
+  label.addEventListener('touchstart', () => {
+    radio._preChecked = radio.checked;
   }, { passive: true });
   radio.addEventListener('click', function() {
     if (this._preChecked) {
