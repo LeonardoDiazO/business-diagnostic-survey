@@ -313,6 +313,27 @@ function renderHistorial() {
   }).join('');
 }
 
+// ── Permitir desmarcar botones de rating (clic en el mismo = quitar) ──
+document.querySelectorAll('.rating-btn input[type=radio]').forEach(radio => {
+  radio.addEventListener('mousedown', function() {
+    this._preChecked = this.checked;
+  });
+  radio.addEventListener('touchstart', function() {
+    this._preChecked = this.checked;
+  }, { passive: true });
+  radio.addEventListener('click', function() {
+    if (this._preChecked) {
+      this.checked = false;
+      if (this.name === 'dolor_otro') {
+        const inp = document.getElementById('otroDolorInput');
+        inp.classList.remove('visible');
+        inp.value = '';
+      }
+      updateProgress();
+    }
+  });
+});
+
 // Inicializar al cargar la página
 actualizarContador();
 actualizarBtnSync();
