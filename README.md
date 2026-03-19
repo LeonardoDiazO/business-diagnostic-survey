@@ -20,7 +20,7 @@ Cuando quieres desarrollar un producto o app para microempresarios pero no sabes
 
 ```
 business-diagnostic-survey/
-├── encuesta_diagnostico_negocios.html   ← El formulario (abrir en el celular)
+├── index.html                           ← El formulario (abrir en el celular)
 ├── assets/
 │   ├── style.css                        ← Estilos visuales
 │   └── app.js                           ← Lógica del formulario + envío a Sheets
