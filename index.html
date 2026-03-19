@@ -35,14 +35,19 @@
 
   <!-- ALERTA OFFLINE -->
   <div class="offline-badge" id="offlineBadge">
-    Sin conexión — tus respuestas se guardarán cuando vuelva el internet
+    Sin conexión — tus respuestas se guardan en el celular
   </div>
+
+  <!-- BOTÓN SINCRONIZAR (aparece solo cuando hay pendientes) -->
+  <button class="btn-sync" id="btnSync" onclick="sincronizarPendientes()" style="display:none">
+    ⬆ Enviar encuestas pendientes
+  </button>
 
   <!-- PROGRESO -->
   <div class="progress-wrap">
     <div class="progress-label">
       <span>Tu avance</span>
-      <span id="progressText">0 de 8</span>
+      <span id="progressText">0 de 9</span>
     </div>
     <div class="progress-bar">
       <div class="progress-fill" id="pbar" style="width:0%"></div>

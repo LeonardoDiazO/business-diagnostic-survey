@@ -122,19 +122,59 @@ function mostrarResumen(data) {
   document.getElementById('summary').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// ── Guardar en localStorage (respaldo local) ──
+// ── Guardar en localStorage como pendiente ──
 function guardarLocal(data) {
   const pendientes = JSON.parse(localStorage.getItem('encuestas_pendientes') || '[]');
   pendientes.push({ data, ts: Date.now() });
   localStorage.setItem('encuestas_pendientes', JSON.stringify(pendientes));
+  actualizarBtnSync();
 }
 
-// ── Enviar pendientes cuando vuelva internet ──
-window.addEventListener('online', () => {
+// ── Sincronizar pendientes uno por uno (seguro) ──
+async function sincronizarPendientes() {
   const pendientes = JSON.parse(localStorage.getItem('encuestas_pendientes') || '[]');
   if (pendientes.length === 0) return;
-  pendientes.forEach(item => enviar(item.data));
-  localStorage.removeItem('encuestas_pendientes');
+
+  const btn = document.getElementById('btnSync');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sincronizando...'; }
+
+  const fallidos = [];
+  for (const item of pendientes) {
+    const ok = await enviar(item.data);
+    if (!ok) fallidos.push(item); // si falla, lo conserva
+  }
+
+  // Solo guarda los que fallaron — los enviados se eliminan
+  localStorage.setItem('encuestas_pendientes', JSON.stringify(fallidos));
+  actualizarBtnSync();
+
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = fallidos.length === 0
+      ? '✅ Todo sincronizado'
+      : `⚠️ ${fallidos.length} sin enviar — reintenta`;
+    setTimeout(() => actualizarBtnSync(), 3000);
+  }
+}
+
+// ── Actualizar botón de sincronización ──
+function actualizarBtnSync() {
+  const pendientes = JSON.parse(localStorage.getItem('encuestas_pendientes') || '[]');
+  const btn = document.getElementById('btnSync');
+  if (!btn) return;
+  if (pendientes.length === 0) {
+    btn.style.display = 'none';
+  } else {
+    btn.style.display = 'block';
+    btn.textContent = `⬆ Enviar ${pendientes.length} encuesta${pendientes.length !== 1 ? 's' : ''} pendiente${pendientes.length !== 1 ? 's' : ''}`;
+    btn.disabled = false;
+  }
+}
+
+// ── Cuando vuelve internet: sincronizar automáticamente ──
+window.addEventListener('online', () => {
+  checkOnline();
+  sincronizarPendientes();
 });
 
 // ── Enviar al servidor (Apps Script) ──
@@ -253,8 +293,9 @@ function renderHistorial() {
   }).join('');
 }
 
-// Inicializar contador al cargar la página
+// Inicializar al cargar la página
 actualizarContador();
+actualizarBtnSync();
 
 // ── Nueva encuesta: limpia todo el formulario ──
 function nuevaEncuesta() {
