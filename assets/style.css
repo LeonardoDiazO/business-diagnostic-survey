@@ -216,6 +216,73 @@ body {
 .opt span { font-size: 13px; color: #1a1a1a; line-height: 1.4; }
 .opt.selected span { color: #1D5C35; }
 
+/* ── Escala de rating (Q4) ── */
+.rating-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #aaa;
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+
+.dolor-item {
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.dolor-label {
+  font-size: 12px;
+  color: #1a1a1a;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.rating-group {
+  display: flex;
+  gap: 5px;
+}
+
+.rating-btn {
+  flex: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rating-btn input[type=radio] {
+  display: none;
+}
+
+.rating-btn span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  background: #fff;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.rating-btn:hover span {
+  border-color: #bbb;
+  color: #555;
+  background: #f5f5f5;
+}
+
+.rating-btn input[type=radio]:checked + span {
+  background: #E94560;
+  border-color: #E94560;
+  color: #fff;
+}
+
 /* ── Campo "Otro" desplegable ── */
 .otro-input {
   display: none;

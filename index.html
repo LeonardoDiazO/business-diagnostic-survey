@@ -98,16 +98,109 @@
   <!-- P4: Dolor principal ⭐ -->
   <div class="card" id="c4">
     <div class="q-num">4 de 8 ⭐ La más importante</div>
-    <div class="q-text">¿Qué parte de tu negocio te quita más tiempo o te genera más dolores de cabeza?</div>
-    <div class="q-hint">Marca máximo 2 — sé honesto/a, esto nos ayuda a ayudarte</div>
-    <label class="opt"><input type="checkbox" name="dolor" value="Controlar el dinero: caja, pagos, deudas" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Controlar el dinero: caja, pagos, deudas</span></label>
-    <label class="opt"><input type="checkbox" name="dolor" value="Inventario: saber qué tengo y qué me falta" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Inventario: saber qué tengo y qué me falta</span></label>
-    <label class="opt"><input type="checkbox" name="dolor" value="Organizar pedidos, turnos o citas de clientes" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Organizar pedidos, turnos o citas de clientes</span></label>
-    <label class="opt"><input type="checkbox" name="dolor" value="Clientes que me deben / hacer cobros" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Clientes que me deben / hacer cobros</span></label>
-    <label class="opt"><input type="checkbox" name="dolor" value="Manejar empleados: horarios, pagos, tareas" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>Manejar empleados: horarios, pagos, tareas</span></label>
-    <label class="opt"><input type="checkbox" name="dolor" value="No tengo tiempo — todo depende de mí" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>No tengo tiempo — todo depende de mí</span></label>
-    <label class="opt"><input type="checkbox" name="dolor" value="No sé cuánto gano ni cuánto pierdo realmente" onchange="limitCheck(this,'dolor',2);updateProgress()"><span>No sé cuánto gano ni cuánto pierdo realmente</span></label>
-    <label class="opt"><input type="checkbox" name="dolor" value="Otro problema" onchange="limitCheck(this,'dolor',2);toggleOtro('otroDolorInput', this);updateProgress()"><span>Otro problema</span></label>
+    <div class="q-text">En una escala del 1 al 6, ¿cuál de estos le genera dolores de cabeza en su negocio?</div>
+    <div class="q-hint">1 = punto más crítico &nbsp;·&nbsp; 6 = manejable — Califica los que apliquen</div>
+
+    <div class="rating-scale-labels">
+      <span>← Más crítico</span>
+      <span>Manejable →</span>
+    </div>
+
+    <div class="dolor-item">
+      <div class="dolor-label">Controlar el dinero: caja, pagos, deudas</div>
+      <div class="rating-group">
+        <label class="rating-btn"><input type="radio" name="dolor_dinero" value="1" onchange="updateProgress()"><span>1</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_dinero" value="2" onchange="updateProgress()"><span>2</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_dinero" value="3" onchange="updateProgress()"><span>3</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_dinero" value="4" onchange="updateProgress()"><span>4</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_dinero" value="5" onchange="updateProgress()"><span>5</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_dinero" value="6" onchange="updateProgress()"><span>6</span></label>
+      </div>
+    </div>
+
+    <div class="dolor-item">
+      <div class="dolor-label">Inventario: saber qué tengo y qué me falta</div>
+      <div class="rating-group">
+        <label class="rating-btn"><input type="radio" name="dolor_inventario" value="1" onchange="updateProgress()"><span>1</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_inventario" value="2" onchange="updateProgress()"><span>2</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_inventario" value="3" onchange="updateProgress()"><span>3</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_inventario" value="4" onchange="updateProgress()"><span>4</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_inventario" value="5" onchange="updateProgress()"><span>5</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_inventario" value="6" onchange="updateProgress()"><span>6</span></label>
+      </div>
+    </div>
+
+    <div class="dolor-item">
+      <div class="dolor-label">Organizar pedidos, turnos o citas de clientes</div>
+      <div class="rating-group">
+        <label class="rating-btn"><input type="radio" name="dolor_pedidos" value="1" onchange="updateProgress()"><span>1</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_pedidos" value="2" onchange="updateProgress()"><span>2</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_pedidos" value="3" onchange="updateProgress()"><span>3</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_pedidos" value="4" onchange="updateProgress()"><span>4</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_pedidos" value="5" onchange="updateProgress()"><span>5</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_pedidos" value="6" onchange="updateProgress()"><span>6</span></label>
+      </div>
+    </div>
+
+    <div class="dolor-item">
+      <div class="dolor-label">Clientes que me deben / hacer cobros</div>
+      <div class="rating-group">
+        <label class="rating-btn"><input type="radio" name="dolor_cobros" value="1" onchange="updateProgress()"><span>1</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_cobros" value="2" onchange="updateProgress()"><span>2</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_cobros" value="3" onchange="updateProgress()"><span>3</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_cobros" value="4" onchange="updateProgress()"><span>4</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_cobros" value="5" onchange="updateProgress()"><span>5</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_cobros" value="6" onchange="updateProgress()"><span>6</span></label>
+      </div>
+    </div>
+
+    <div class="dolor-item">
+      <div class="dolor-label">Manejar empleados: horarios, pagos, tareas</div>
+      <div class="rating-group">
+        <label class="rating-btn"><input type="radio" name="dolor_empleados" value="1" onchange="updateProgress()"><span>1</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_empleados" value="2" onchange="updateProgress()"><span>2</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_empleados" value="3" onchange="updateProgress()"><span>3</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_empleados" value="4" onchange="updateProgress()"><span>4</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_empleados" value="5" onchange="updateProgress()"><span>5</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_empleados" value="6" onchange="updateProgress()"><span>6</span></label>
+      </div>
+    </div>
+
+    <div class="dolor-item">
+      <div class="dolor-label">No tengo tiempo — todo depende de mí</div>
+      <div class="rating-group">
+        <label class="rating-btn"><input type="radio" name="dolor_tiempo" value="1" onchange="updateProgress()"><span>1</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_tiempo" value="2" onchange="updateProgress()"><span>2</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_tiempo" value="3" onchange="updateProgress()"><span>3</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_tiempo" value="4" onchange="updateProgress()"><span>4</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_tiempo" value="5" onchange="updateProgress()"><span>5</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_tiempo" value="6" onchange="updateProgress()"><span>6</span></label>
+      </div>
+    </div>
+
+    <div class="dolor-item">
+      <div class="dolor-label">No sé cuánto gano ni cuánto pierdo realmente</div>
+      <div class="rating-group">
+        <label class="rating-btn"><input type="radio" name="dolor_ganancias" value="1" onchange="updateProgress()"><span>1</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_ganancias" value="2" onchange="updateProgress()"><span>2</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_ganancias" value="3" onchange="updateProgress()"><span>3</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_ganancias" value="4" onchange="updateProgress()"><span>4</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_ganancias" value="5" onchange="updateProgress()"><span>5</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_ganancias" value="6" onchange="updateProgress()"><span>6</span></label>
+      </div>
+    </div>
+
+    <div class="dolor-item">
+      <div class="dolor-label">Otro problema</div>
+      <div class="rating-group">
+        <label class="rating-btn"><input type="radio" name="dolor_otro" value="1" onchange="toggleOtroDolorRating();updateProgress()"><span>1</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_otro" value="2" onchange="toggleOtroDolorRating();updateProgress()"><span>2</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_otro" value="3" onchange="toggleOtroDolorRating();updateProgress()"><span>3</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_otro" value="4" onchange="toggleOtroDolorRating();updateProgress()"><span>4</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_otro" value="5" onchange="toggleOtroDolorRating();updateProgress()"><span>5</span></label>
+        <label class="rating-btn"><input type="radio" name="dolor_otro" value="6" onchange="toggleOtroDolorRating();updateProgress()"><span>6</span></label>
+      </div>
+    </div>
     <input class="otro-input" type="text" id="otroDolorInput" placeholder="¿Cuál es ese problema?" oninput="updateProgress()">
   </div>
 

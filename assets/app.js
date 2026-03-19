@@ -28,14 +28,11 @@ function toggleOtro(inputId, checkbox) {
   }
 }
 
-// ── Limitar checkboxes ──
-function limitCheck(el, name, max) {
-  const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
-  if (checked.length > max) {
-    el.checked = false;
-    return;
-  }
-  updateOptStyles();
+// ── Mostrar campo "Otro" cuando se califica ese ítem ──
+function toggleOtroDolorRating() {
+  const input = document.getElementById('otroDolorInput');
+  input.classList.add('visible');
+  input.focus();
 }
 
 // ── Actualizar estilos de opciones ──
@@ -54,7 +51,8 @@ function updateProgress() {
     document.querySelectorAll('input[name="tipo"]:checked').length > 0,
     !!document.querySelector('input[name="anos"]:checked'),
     !!document.querySelector('input[name="tamano"]:checked'),
-    document.querySelectorAll('input[name="dolor"]:checked').length > 0,
+    ['dolor_dinero','dolor_inventario','dolor_pedidos','dolor_cobros','dolor_empleados','dolor_tiempo','dolor_ganancias','dolor_otro']
+      .some(n => !!document.querySelector(`input[name="${n}"]:checked`)),
     !!document.querySelector('input[name="control"]:checked'),
     document.querySelectorAll('input[name="dispositivos"]:checked').length > 0,
     !!document.querySelector('input[name="tech"]:checked'),
@@ -80,10 +78,15 @@ function recopilar() {
              }).join(' / ') || '—',
     anos:    document.querySelector('input[name="anos"]:checked')?.value || '—',
     tamano:  document.querySelector('input[name="tamano"]:checked')?.value || '—',
-    dolor:   [...document.querySelectorAll('input[name="dolor"]:checked')].map(e => {
-               const txt = document.getElementById('otroDolorInput')?.value.trim();
-               return e.value === 'Otro problema' && txt ? `Otro: ${txt}` : e.value;
-             }).join(' / ') || '—',
+    dolor_dinero:     document.querySelector('input[name="dolor_dinero"]:checked')?.value || '—',
+    dolor_inventario: document.querySelector('input[name="dolor_inventario"]:checked')?.value || '—',
+    dolor_pedidos:    document.querySelector('input[name="dolor_pedidos"]:checked')?.value || '—',
+    dolor_cobros:     document.querySelector('input[name="dolor_cobros"]:checked')?.value || '—',
+    dolor_empleados:  document.querySelector('input[name="dolor_empleados"]:checked')?.value || '—',
+    dolor_tiempo:     document.querySelector('input[name="dolor_tiempo"]:checked')?.value || '—',
+    dolor_ganancias:  document.querySelector('input[name="dolor_ganancias"]:checked')?.value || '—',
+    dolor_otro:       document.querySelector('input[name="dolor_otro"]:checked')?.value || '—',
+    dolor_otro_texto: document.getElementById('otroDolorInput')?.value.trim() || '—',
     control:      document.querySelector('input[name="control"]:checked')?.value || '—',
     dispositivos: [...document.querySelectorAll('input[name="dispositivos"]:checked')].map(e => e.value).join(' / ') || '—',
     tech:         document.querySelector('input[name="tech"]:checked')?.value || '—',
@@ -96,13 +99,30 @@ function recopilar() {
   };
 }
 
+// ── Formatear ratings de dolor para mostrar ──
+function formatDolorResumen(d) {
+  // Compatibilidad con formato anterior (campo único 'dolor')
+  if (d.dolor && d.dolor !== '—') return d.dolor;
+  const items = [
+    ['Dinero',      d.dolor_dinero],
+    ['Inventario',  d.dolor_inventario],
+    ['Pedidos',     d.dolor_pedidos],
+    ['Cobros',      d.dolor_cobros],
+    ['Empleados',   d.dolor_empleados],
+    ['Tiempo',      d.dolor_tiempo],
+    ['Ganancias',   d.dolor_ganancias],
+    ['Otro',        d.dolor_otro],
+  ].filter(([, v]) => v && v !== '—').map(([k, v]) => `${k}: ${v}`);
+  return items.length ? items.join(' · ') : '—';
+}
+
 // ── Mostrar resumen en pantalla ──
 function mostrarResumen(data) {
   const labels = [
     { q: 'Tipo de negocio',      a: data.tipo    },
     { q: 'Tiempo en el mercado', a: data.anos    },
     { q: 'Tamaño del equipo',    a: data.tamano  },
-    { q: 'Principal problema',   a: data.dolor   },
+    { q: 'Dolores de cabeza (1=crítico · 6=manejable)', a: formatDolorResumen(data) },
     { q: 'Control actual',       a: data.control      },
     { q: 'Dispositivos que usa', a: data.dispositivos },
     { q: 'Comodidad tecnología', a: data.tech         },
@@ -287,7 +307,7 @@ function renderHistorial() {
         <div class="hist-negocio">${nombre}</div>
         <div class="hist-dolor">
           <strong>Tipo:</strong> ${d.tipo} &nbsp;·&nbsp;
-          <strong>Dolor:</strong> ${d.dolor}
+          <strong>Dolor:</strong> ${formatDolorResumen(d)}
         </div>
       </div>`;
   }).join('');
