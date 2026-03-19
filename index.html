@@ -21,7 +21,7 @@
         <span class="historial-label">encuestas</span>
       </button>
     </div>
-    <span class="badge">8 preguntas clave</span>
+    <span class="badge">9 preguntas clave</span>
   </div>
 
   <!-- PANEL HISTORIAL -->
@@ -121,9 +121,24 @@
   <!-- ══ SECCIÓN C: TECNOLOGÍA ══ -->
   <div class="section-label">C · Tecnología y disposición</div>
 
-  <!-- P6: Comodidad con tecnología -->
+  <!-- P6: Dispositivos que usa hoy -->
   <div class="card" id="c6">
-    <div class="q-num">6 de 8</div>
+    <div class="q-num">6 de 9</div>
+    <div class="q-text">¿Qué dispositivos o equipos usas hoy en tu negocio?</div>
+    <div class="q-hint">Marca todo lo que tengas — aunque no lo uses para el negocio</div>
+    <label class="opt"><input type="checkbox" name="dispositivos" value="Celular / Smartphone" onchange="updateProgress()"><span>Celular / Smartphone</span></label>
+    <label class="opt"><input type="checkbox" name="dispositivos" value="Computador o laptop" onchange="updateProgress()"><span>Computador o laptop</span></label>
+    <label class="opt"><input type="checkbox" name="dispositivos" value="Tablet" onchange="updateProgress()"><span>Tablet</span></label>
+    <label class="opt"><input type="checkbox" name="dispositivos" value="Caja registradora o sistema POS" onchange="updateProgress()"><span>Caja registradora o sistema POS</span></label>
+    <label class="opt"><input type="checkbox" name="dispositivos" value="Localizadores para clientes (buzzer de restaurante)" onchange="updateProgress()"><span>Localizadores para clientes (buzzer de restaurante)</span></label>
+    <label class="opt"><input type="checkbox" name="dispositivos" value="Impresora de facturas o tickets" onchange="updateProgress()"><span>Impresora de facturas o tickets</span></label>
+    <label class="opt"><input type="checkbox" name="dispositivos" value="Pantalla de menú o pedidos digital" onchange="updateProgress()"><span>Pantalla de menú o pedidos digital</span></label>
+    <label class="opt"><input type="checkbox" name="dispositivos" value="Ninguno de estos" onchange="updateProgress()"><span>Ninguno de estos</span></label>
+  </div>
+
+  <!-- P7: Comodidad con tecnología -->
+  <div class="card" id="c7">
+    <div class="q-num">7 de 9</div>
     <div class="q-text">¿Te sientes cómodo/a usando el celular para cosas del negocio?</div>
     <div class="q-hint">Esto nos dice qué tan sencilla debe ser la solución</div>
     <label class="opt"><input type="radio" name="tech" value="Sí — uso WhatsApp, redes y apps sin problema" onchange="updateProgress()"><span>Sí — uso WhatsApp, redes y apps sin problema</span></label>
@@ -131,17 +146,17 @@
     <label class="opt"><input type="radio" name="tech" value="Prefiero no depender del celular" onchange="updateProgress()"><span>Prefiero no depender del celular</span></label>
   </div>
 
-  <!-- P7: Varita mágica ✏️ -->
-  <div class="card" id="c7">
-    <div class="q-num">7 de 8 ✏️ Tu voz</div>
+  <!-- P8: Varita mágica ✏️ -->
+  <div class="card" id="c8">
+    <div class="q-num">8 de 9 ✏️ Tu voz</div>
     <div class="q-text">Si tuvieras una varita mágica, ¿qué le quitarías o mejorarías a tu negocio HOY?</div>
     <div class="q-hint">Escribe en tus propias palabras — no hay respuesta incorrecta</div>
     <textarea id="varita" placeholder="Ej: Que no se me olvide quién me debe, que sepa cuánto vendí hoy, que mis empleados lleguen a tiempo..." onkeyup="updateProgress()"></textarea>
   </div>
 
-  <!-- P8: Disposición de pago -->
-  <div class="card" id="c8">
-    <div class="q-num">8 de 8</div>
+  <!-- P9: Disposición de pago -->
+  <div class="card" id="c9">
+    <div class="q-num">9 de 9</div>
     <div class="q-text">¿Pagarías por una app que te resuelva ese problema?</div>
     <div class="q-hint">Total honestidad — esto no es una venta, es para diseñar bien la solución</div>
     <label class="opt"><input type="radio" name="pago" value="Sí, si realmente me ahorra tiempo o dinero" onchange="updateProgress()"><span>Sí, si realmente me ahorra tiempo o dinero</span></label>

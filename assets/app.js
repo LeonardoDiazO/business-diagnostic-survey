@@ -5,7 +5,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwg1vtXH64ePefhiLzWd
 // Ejemplo: 'https://script.google.com/macros/s/AKfycby.../exec'
 // ══════════════════════════════════════════════════
 
-const TOTAL = 8;
+const TOTAL = 9;
 
 // ── Detectar offline ──
 function checkOnline() {
@@ -56,6 +56,7 @@ function updateProgress() {
     !!document.querySelector('input[name="tamano"]:checked'),
     document.querySelectorAll('input[name="dolor"]:checked').length > 0,
     !!document.querySelector('input[name="control"]:checked'),
+    document.querySelectorAll('input[name="dispositivos"]:checked').length > 0,
     !!document.querySelector('input[name="tech"]:checked'),
     document.getElementById('varita').value.trim().length > 5,
     !!document.querySelector('input[name="pago"]:checked'),
@@ -65,7 +66,7 @@ function updateProgress() {
   document.getElementById('pbar').style.width = Math.round((done / TOTAL) * 100) + '%';
   document.getElementById('progressText').textContent = `${done} de ${TOTAL}`;
 
-  ['c1','c2','c3','c4','c5','c6','c7','c8'].forEach((id, i) => {
+  ['c1','c2','c3','c4','c5','c6','c7','c8','c9'].forEach((id, i) => {
     document.getElementById(id).classList.toggle('answered', checks[i]);
   });
 }
@@ -83,8 +84,9 @@ function recopilar() {
                const txt = document.getElementById('otroDolorInput')?.value.trim();
                return e.value === 'Otro problema' && txt ? `Otro: ${txt}` : e.value;
              }).join(' / ') || '—',
-    control: document.querySelector('input[name="control"]:checked')?.value || '—',
-    tech:    document.querySelector('input[name="tech"]:checked')?.value || '—',
+    control:      document.querySelector('input[name="control"]:checked')?.value || '—',
+    dispositivos: [...document.querySelectorAll('input[name="dispositivos"]:checked')].map(e => e.value).join(' / ') || '—',
+    tech:         document.querySelector('input[name="tech"]:checked')?.value || '—',
     varita:  document.getElementById('varita').value.trim() || '—',
     pago:    document.querySelector('input[name="pago"]:checked')?.value || '—',
     nombre:  document.getElementById('f_nombre').value.trim(),
@@ -101,8 +103,9 @@ function mostrarResumen(data) {
     { q: 'Tiempo en el mercado', a: data.anos    },
     { q: 'Tamaño del equipo',    a: data.tamano  },
     { q: 'Principal problema',   a: data.dolor   },
-    { q: 'Control actual',       a: data.control },
-    { q: 'Comodidad tecnología', a: data.tech    },
+    { q: 'Control actual',       a: data.control      },
+    { q: 'Dispositivos que usa', a: data.dispositivos },
+    { q: 'Comodidad tecnología', a: data.tech         },
     { q: 'Varita mágica',        a: data.varita  },
     { q: 'Disposición de pago',  a: data.pago    },
   ];
