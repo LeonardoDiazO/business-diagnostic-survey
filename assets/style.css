@@ -72,6 +72,22 @@ body {
   margin-top: 2px;
 }
 
+/* ── Botón guion de entrevista ── */
+.btn-guion {
+  display: inline-block;
+  background: #E94560;
+  color: white;
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.2px;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.btn-guion:hover { background: #c73650; }
+
 /* ── Panel de historial ── */
 .historial-panel {
   background: #fff;
@@ -440,6 +456,33 @@ textarea:focus { border-color: #E94560; background: #fff; }
 .btn-nueva:hover  { background: #178060; }
 .btn-nueva:active { background: #126650; }
 
+/* ── Botón imprimir encuesta ── */
+.btn-print-encuesta {
+  background: #f0f0f0;
+  color: #1a1a1a;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-size: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.btn-print-encuesta:hover { background: #e0e0e0; }
+
 @media (max-width: 380px) {
   .contact-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Estilos de impresión ── */
+@media print {
+  body { background: white; }
+  .header { background: #1A1A2E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .btn-save, .btn-print-encuesta, .btn-sync, .btn-nueva,
+  .btn-historial, .btn-guion, .historial-panel,
+  .offline-badge, .progress-wrap, .status-msg, .summary { display: none !important; }
+  .card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; }
+  .section-label { break-after: avoid; }
+  .wrap { max-width: 100%; padding: 0 10px; }
+  .opt.selected { background: #eaf6ee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }

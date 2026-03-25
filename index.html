@@ -14,12 +14,15 @@
     <div class="header-top">
       <div>
         <h1>Diagnóstico de negocio</h1>
-        <p>Te ayuda a mejorar — solo 5 minutos</p>
+        <p>Te ayuda a mejorar — solo 10 minutos</p>
       </div>
-      <button class="btn-historial" onclick="toggleHistorial()" id="btnHistorial">
-        <span id="contadorBadge">0</span>
-        <span class="historial-label">encuestas</span>
-      </button>
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+        <button class="btn-historial" onclick="toggleHistorial()" id="btnHistorial">
+          <span id="contadorBadge">0</span>
+          <span class="historial-label">encuestas</span>
+        </button>
+        <a href="guion.html" class="btn-guion">📋 Guion</a>
+      </div>
     </div>
     <span class="badge">9 preguntas clave</span>
   </div>
@@ -287,10 +290,15 @@
     </div>
   </div>
 
-  <!-- BOTÓN -->
-  <button class="btn-save" id="btnGuardar" onclick="guardar()">
-    Guardar respuestas
-  </button>
+  <!-- BOTONES -->
+  <div style="display:flex; gap:10px; margin-top:20px;">
+    <button class="btn-save" id="btnGuardar" onclick="guardar()" style="margin-top:0; flex:1;">
+      Guardar respuestas
+    </button>
+    <button class="btn-print-encuesta" onclick="window.print()">
+      🖨️
+    </button>
+  </div>
 
   <!-- MENSAJES DE ESTADO -->
   <div class="status-msg ok" id="msgOk">

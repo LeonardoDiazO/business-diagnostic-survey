@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guion de Entrevista — Diagnóstico de Negocio</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f2f2f7;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 620px; margin: 0 auto; padding: 0 16px 60px; }
+
+    /* ── Pantalla de acceso ── */
+    #pantalla-acceso {
+      position: fixed;
+      inset: 0;
+      background: #1A1A2E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 24px;
+    }
+    .acceso-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .acceso-icono { font-size: 40px; margin-bottom: 12px; }
+    .acceso-titulo {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1A1A2E;
+      margin-bottom: 4px;
+    }
+    .acceso-sub {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .pin-inputs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .pin-inputs input {
+      width: 52px;
+      height: 58px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      color: #1A1A2E;
+      background: #fafafa;
+      outline: none;
+      transition: border-color 0.15s;
+      -webkit-text-security: disc;
+    }
+    .pin-inputs input:focus { border-color: #E94560; background: #fff; }
+    .pin-inputs input.error { border-color: #E94560; background: #fff5f7; animation: shake 0.3s; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-4px); }
+      75%      { transform: translateX(4px); }
+    }
+    .btn-acceso {
+      width: 100%;
+      background: #1A1A2E;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-acceso:hover { background: #E94560; }
+    .acceso-error {
+      display: none;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #E94560;
+      font-weight: 600;
+    }
+    .acceso-intentos {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #bbb;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #1A1A2E;
+      color: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin: 16px 0 6px;
+    }
+    .header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .header h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+    .header p  { font-size: 11px; color: #aaa; margin-top: 4px; line-height: 1.5; }
+    .badge-pill {
+      display: inline-block;
+      background: #E94560;
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 8px;
+      letter-spacing: 0.3px;
+    }
+    .btn-back {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,0.18); }
+
+    /* ── Uso quick ── */
+    .uso-rapido {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 12px;
+      color: #7a5800;
+      line-height: 1.6;
+    }
+    .uso-rapido strong { color: #5c4200; }
+
+    /* ── Etiqueta de sección ── */
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #E94560;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 22px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-time {
+      font-size: 10px;
+      color: #aaa;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    /* ── Bloque de paso (apertura, cierre) ── */
+    .bloque {
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 10px;
+    }
+    .bloque-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1A1A2E;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bloque-title .icon { font-size: 14px; }
+
+    /* ── Script (lo que dice el encuestador) ── */
+    .script-box {
+      background: #1A1A2E;
+      color: #e8e8e8;
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 13px;
+      line-height: 1.65;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .script-box::before {
+      content: '💬';
+      position: absolute;
+      top: -9px;
+      left: 14px;
+      font-size: 14px;
+      background: #1A1A2E;
+      padding: 0 4px;
+    }
+    .script-box em {
+      color: #E94560;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* ── Tarjeta de pregunta ── */
+    .pregunta-card {
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-left: 3px solid #E94560;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+    }
+    .pregunta-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .pregunta-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: #E94560;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+    .pregunta-titulo {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.4;
+      flex: 1;
+    }
+    .tiempo-badge {
+      background: #f0f0f0;
+      color: #666;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── Por qué preguntamos esto ── */
+    .por-que {
+      background: #eaf6ee;
+      border-left: 3px solid #1D9E75;
+      border-radius: 0 8px 8px 0;
+      padding: 8px 12px;
+      font-size: 11px;
+      color: #1D5C35;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .por-que strong { color: #155a30; }
+
+    /* ── Objeciones / tips ── */
+    .tips-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #888;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .tip-item {
+      display: flex;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: #fafafa;
+      border: 1px solid #f0f0f0;
+      margin-bottom: 5px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .tip-item.objecion { background: #fff5f7; border-color: #ffd6dc; }
+    .tip-item.objecion .tip-icon { color: #E94560; }
+    .tip-item.argumento { background: #f0f8ff; border-color: #c8e0f7; }
+    .tip-item.argumento .tip-icon { color: #1a6fcf; }
+    .tip-item.ojo { background: #fff8e1; border-color: #ffe082; }
+    .tip-item.ojo .tip-icon { color: #7a5800; }
+    .tip-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .tip-text { color: #333; }
+    .tip-text strong { color: #1a1a1a; }
+
+    /* ── Respuesta modelo (lo que el encuestador dice al responder objeción) ── */
+    .respuesta-modelo {
+      background: #f5f5f5;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #444;
+      line-height: 1.5;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    /* ── Separador visual ── */
+    .divider {
+      border: none;
+      border-top: 1px dashed #e0e0e0;
+      margin: 10px 0;
+    }
+
+    /* ── Sección especial: varita mágica ── */
+    .pregunta-card.estrella { border-left-color: #f59e0b; }
+    .pregunta-card.estrella .pregunta-num { color: #b45309; }
+
+    /* ── Cierre ── */
+    .cierre-card {
+      background: #1A1A2E;
+      color: white;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-top: 6px;
+    }
+    .cierre-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+    .cierre-card .script-box {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .cierre-card .script-box::before { background: transparent; }
+
+    /* ── Tabla de señales de compra ── */
+    .senal-grid { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+    .senal-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: rgba(255,255,255,0.07);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .senal-item .senal-icon { font-size: 14px; flex-shrink: 0; }
+    .senal-item .senal-text { color: #ddd; }
+    .senal-item .senal-text strong { color: #fff; }
+
+    /* ── Print ── */
+    .btn-print {
+      display: block;
+      width: 100%;
+      background: #1D9E75;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.2s;
+      letter-spacing: -0.2px;
+    }
+    .btn-print:hover { background: #178060; }
+
+    @media print {
+      body { background: white; }
+      .btn-print, .btn-back { display: none; }
+      .wrap { max-width: 100%; padding: 0 10px; }
+      .script-box { background: #222; -webkit-print-color-adjust: exact; }
+    }
+
+    @media (max-width: 400px) {
+      .pregunta-header { flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ══ PANTALLA DE ACCESO (se oculta al validar PIN) ══ -->
+  <div id="pantalla-acceso">
+    <div class="acceso-box">
+      <div class="acceso-icono">🔒</div>
+      <div class="acceso-titulo">Acceso encuestadores</div>
+      <div class="acceso-sub">Este guion es de uso interno.<br>Ingresa el PIN para continuar.</div>
+      <div class="pin-inputs">
+        <input type="password" inputmode="numeric" maxlength="1" id="p0" autocomplete="off">
+        <input type="password" inputmode="numeric" maxlength="1" id="p1" autocomplete="off">
+        <input type="password" inputmode="numeric" maxlength="1" id="p2" autocomplete="off">
+        <input type="password" inputmode="numeric" maxlength="1" id="p3" autocomplete="off">
+      </div>
+      <button class="btn-acceso" onclick="verificarPin()">Ingresar</button>
+      <div class="acceso-error" id="accesoError">PIN incorrecto. Intenta de nuevo.</div>
+      <div class="acceso-intentos" id="accesoIntentos"></div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-row">
+      <div>
+        <h1>Guion de Entrevista</h1>
+        <p>Diagnóstico de negocio · Uso exclusivo del encuestador</p>
+        <span class="badge-pill">~10 minutos · 9 preguntas</span>
+      </div>
+      <a href="index.html" class="btn-back">← Encuesta</a>
+    </div>
+  </div>
+
+  <!-- USO RÁPIDO -->
+  <div class="uso-rapido">
+    <strong>Cómo usar este guion:</strong> Lee las frases en <strong>negro</strong> exactamente como están.
+    Los bloques verdes te dicen <em>por qué</em> preguntas esto. Los bloques de colores te ayudan cuando el cliente
+    duda o pone objeción. <strong>No improvises en las preguntas de dolor — sigue el orden.</strong>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- APERTURA -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-label">
+    Apertura
+    <span class="section-time">· ~2 min</span>
+  </div>
+
+  <div class="bloque">
+    <div class="bloque-title"><span class="icon">🤝</span> Presentación y contexto</div>
+    <div class="script-box">
+      "Buenos días / Buenas tardes. Mi nombre es <em>[tu nombre]</em>, estamos haciendo un diagnóstico
+      gratuito a dueños de negocios en la zona para entender qué les cuesta más trabajo administrar.
+      No es una venta — es investigación. Con sus respuestas vamos a diseñar una herramienta que realmente
+      les ayude. Son máximo <em>10 minutos</em>. ¿Le parece bien?"
+    </div>
+
+    <hr class="divider">
+
+    <div class="tips-title">Si el cliente dice que no tiene tiempo</div>
+    <div class="tip-item objecion">
+      <span class="tip-icon">❌</span>
+      <div class="tip-text">
+        <strong>"No tengo tiempo ahorita"</strong>
+        <div class="respuesta-modelo">
+          "Entiendo perfectamente. ¿Podemos hacer las 3 preguntas más importantes en 5 minutos?
+          Si después quiere continuar, seguimos — si no, ya nos ayudó un montón."
+        </div>
+      </div>
+    </div>
+    <div class="tip-item objecion">
+      <span class="tip-icon">❓</span>
+      <div class="tip-text">
+        <strong>"¿Para qué es esto?"</strong>
+        <div class="respuesta-modelo">
+          "Estamos construyendo una app para negocios como el suyo. Antes de hacerla,
+          queremos saber qué problema real tiene — no queremos adivinar. Su opinión vale mucho."
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECCIÓN A: PERFIL -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-label">
+    A · Perfil del negocio
+    <span class="section-time">· ~3 min</span>
+  </div>
+
+  <!-- P1 -->
+  <div class="pregunta-card">
+    <div class="pregunta-header">
+      <span class="pregunta-num">P1 de 9</span>
+      <div class="pregunta-titulo">¿Qué tipo de negocio tiene?</div>
+      <span class="tiempo-badge">~30 seg</span>
+    </div>
+    <div class="script-box">
+      "Para empezar, cuénteme un poco de su negocio — ¿a qué se dedica?
+      ¿Es tienda, restaurante, servicios, distribución…?"
+    </div>
+    <div class="por-que">
+      <strong>Por qué preguntamos:</strong> El tipo de negocio define qué dolores son más comunes.
+      Un restaurante sufre más con turnos y pedidos; una tienda, con inventario. Esto nos permite
+      personalizar el resto de la conversación.
+    </div>
+    <div class="tips-title">Tips</div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">Si el cliente tiene un negocio mixto (vende y presta servicios), anota ambos — es información valiosa.</div>
+    </div>
+    <div class="tip-item ojo">
+      <span class="tip-icon">👀</span>
+      <div class="tip-text">Observa el local mientras habla: el tipo de negocio que describes visualmente puede diferir de lo que él cree que es.</div>
+    </div>
+  </div>
+
+  <!-- P2 -->
+  <div class="pregunta-card">
+    <div class="pregunta-header">
+      <span class="pregunta-num">P2 de 9</span>
+      <div class="pregunta-titulo">¿Cuánto tiempo lleva abierto el negocio?</div>
+      <span class="tiempo-badge">~20 seg</span>
+    </div>
+    <div class="script-box">
+      "¿Y cuánto tiempo llevan aquí? ¿Arrancaron hace poco o ya tienen años en esto?"
+    </div>
+    <div class="por-que">
+      <strong>Por qué preguntamos:</strong> La antigüedad indica madurez del problema. Un negocio con más
+      de 3 años tiene dolores más definidos y mayor disposición a pagar por soluciones. Los que llevan
+      menos de 1 año aún están descubriendo sus problemas.
+    </div>
+    <div class="tips-title">Tips</div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Si lleva más de 5 años:</strong> "Con tantos años de experiencia, usted ya sabe bien qué funciona y qué no — eso es exactamente lo que necesitamos escuchar."</div>
+    </div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Si lleva menos de 1 año:</strong> "Perfecto, estamos justo a tiempo — así podemos incluir sus necesidades desde el inicio."</div>
+    </div>
+  </div>
+
+  <!-- P3 -->
+  <div class="pregunta-card">
+    <div class="pregunta-header">
+      <span class="pregunta-num">P3 de 9</span>
+      <div class="pregunta-titulo">¿Cuántas personas trabajan en el negocio?</div>
+      <span class="tiempo-badge">~20 seg</span>
+    </div>
+    <div class="script-box">
+      "¿Y cómo tiene el equipo? ¿Trabaja solo o tiene gente con usted —
+      empleados, familiares, socios?"
+    </div>
+    <div class="por-que">
+      <strong>Por qué preguntamos:</strong> Determina la complejidad de la operación. Un negocio de 1 persona
+      necesita simplicidad extrema. Con 5 o más personas aparecen problemas de coordinación, pagos y turnos.
+    </div>
+    <div class="tips-title">Tips</div>
+    <div class="tip-item ojo">
+      <span class="tip-icon">👀</span>
+      <div class="tip-text">Los dueños frecuentemente no cuentan a los familiares. Ayúdale: <em>"¿Y su esposa, su hijo, un primo — ellos apoyan aunque sea a veces?"</em></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECCIÓN B: EL PROBLEMA -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-label">
+    B · Lo que más le estresa
+    <span class="section-time">· ~6 min — La sección más importante</span>
+  </div>
+
+  <div class="bloque">
+    <div class="bloque-title"><span class="icon">⚠️</span> Antes de P4 — Cómo introducir la escala</div>
+    <div class="script-box">
+      "Ahora viene la parte más importante. Le voy a leer 7 situaciones que les pasan a los negocios.
+      Para cada una, me dice del <em>1 al 6</em> qué tan grave es para usted:
+      <em>1 es lo que más le duele</em> — lo que más le quita el sueño.
+      <em>6 es algo que maneja bien</em>, que no le preocupa tanto.
+      Si algo no le aplica, simplemente lo saltamos. ¿Listo?"
+    </div>
+  </div>
+
+  <!-- P4 -->
+  <div class="pregunta-card">
+    <div class="pregunta-header">
+      <span class="pregunta-num">P4 de 9 ⭐</span>
+      <div class="pregunta-titulo">Escala de dolores del negocio (1 = más crítico · 6 = manejable)</div>
+      <span class="tiempo-badge">~3 min</span>
+    </div>
+
+    <div class="por-que">
+      <strong>Por qué preguntamos así:</strong> Forzar una escala elimina el "todo me duele por igual".
+      El cliente revela prioridades reales que quizás nunca ha verbalizado. Escucha con atención
+      cuáles le generan más emoción al responder.
+    </div>
+
+    <!-- Items de dolor -->
+    <div class="tips-title">Leer cada ítem así — esperar respuesta antes de pasar al siguiente</div>
+
+    <div class="tip-item" style="flex-direction:column; gap:4px; background:#f8f8f8;">
+      <div style="font-size:12px; font-weight:700; color:#1A1A2E;">💰 Ítem 1: Controlar el dinero</div>
+      <div class="respuesta-modelo" style="margin:0; font-style:normal;">
+        "Primero — <strong>controlar el dinero</strong>: la caja, los pagos, las deudas. Del 1 al 6, ¿cómo le va con eso?"
+      </div>
+    </div>
+
+    <div class="tip-item" style="flex-direction:column; gap:4px; background:#f8f8f8; margin-top:4px;">
+      <div style="font-size:12px; font-weight:700; color:#1A1A2E;">📦 Ítem 2: Inventario</div>
+      <div class="respuesta-modelo" style="margin:0; font-style:normal;">
+        "El inventario — saber exactamente qué tiene y qué le falta. Del 1 al 6."
+      </div>
+    </div>
+
+    <div class="tip-item" style="flex-direction:column; gap:4px; background:#f8f8f8; margin-top:4px;">
+      <div style="font-size:12px; font-weight:700; color:#1A1A2E;">📋 Ítem 3: Pedidos, turnos o citas</div>
+      <div class="respuesta-modelo" style="margin:0; font-style:normal;">
+        "Organizar los pedidos, los turnos o las citas de los clientes. ¿Del 1 al 6?"
+      </div>
+    </div>
+
+    <div class="tip-item" style="flex-direction:column; gap:4px; background:#f8f8f8; margin-top:4px;">
+      <div style="font-size:12px; font-weight:700; color:#1A1A2E;">💳 Ítem 4: Cobros y clientes que deben</div>
+      <div class="respuesta-modelo" style="margin:0; font-style:normal;">
+        "Los clientes que le deben — hacer cobros, llevar la cuenta de los fiados. Del 1 al 6."
+      </div>
+    </div>
+
+    <div class="tip-item" style="flex-direction:column; gap:4px; background:#f8f8f8; margin-top:4px;">
+      <div style="font-size:12px; font-weight:700; color:#1A1A2E;">👥 Ítem 5: Manejar empleados</div>
+      <div class="respuesta-modelo" style="margin:0; font-style:normal;">
+        "Manejar empleados — horarios, pagos, asignar tareas. ¿Cómo le va con eso del 1 al 6?"
+      </div>
+    </div>
+
+    <div class="tip-item" style="flex-direction:column; gap:4px; background:#f8f8f8; margin-top:4px;">
+      <div style="font-size:12px; font-weight:700; color:#1A1A2E;">⏰ Ítem 6: Falta de tiempo</div>
+      <div class="respuesta-modelo" style="margin:0; font-style:normal;">
+        "Que todo depende de usted — no tiene tiempo para nada más. Del 1 al 6."
+      </div>
+    </div>
+
+    <div class="tip-item" style="flex-direction:column; gap:4px; background:#f8f8f8; margin-top:4px;">
+      <div style="font-size:12px; font-weight:700; color:#1A1A2E;">📊 Ítem 7: No saber cuánto gana realmente</div>
+      <div class="respuesta-modelo" style="margin:0; font-style:normal;">
+        "No saber cuánto gana ni cuánto pierde realmente — que los números no cuadran. Del 1 al 6."
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="tips-title">Cómo manejar respuestas en P4</div>
+
+    <div class="tip-item objecion">
+      <span class="tip-icon">❌</span>
+      <div class="tip-text">
+        <strong>"Todos son problema para mí"</strong>
+        <div class="respuesta-modelo">
+          "Entiendo — es muy común. Pero si tuviera que resolver UNO solo hoy,
+          ¿cuál elegiría primero? Ese es el 1."
+        </div>
+      </div>
+    </div>
+    <div class="tip-item objecion">
+      <span class="tip-icon">❌</span>
+      <div class="tip-text">
+        <strong>"No entiendo la escala"</strong>
+        <div class="respuesta-modelo">
+          "Piénselo así: si fuera una herida, el 1 es la que más le duele —
+          la que necesita curar hoy. El 6 es solo un raspón."
+        </div>
+      </div>
+    </div>
+    <div class="tip-item ojo">
+      <span class="tip-icon">👀</span>
+      <div class="tip-text">
+        <strong>Señal de oro:</strong> cuando el cliente empieza a contar una historia sobre un ítem
+        específico (ej: "¡Ay, los cobros! Una vez un cliente...") — anota eso textualmente.
+        Es el dolor real, no el declarado.
+      </div>
+    </div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">
+        Si el cliente da 1 o 2 en algo, profundiza: <em>"¿Y qué pasa exactamente cuando eso falla?
+        ¿Cuánto cree que le cuesta ese problema al mes?"</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- P5 -->
+  <div class="pregunta-card">
+    <div class="pregunta-header">
+      <span class="pregunta-num">P5 de 9</span>
+      <div class="pregunta-titulo">¿Cómo lleva el control del negocio hoy?</div>
+      <span class="tiempo-badge">~1 min</span>
+    </div>
+    <div class="script-box">
+      "Y hoy en día, ¿cómo lleva el control — de ventas, gastos, lo que sea?
+      ¿Lo tiene en la cabeza, en un cuaderno, en Excel, en alguna app?"
+    </div>
+    <div class="por-que">
+      <strong>Por qué preguntamos:</strong> Revela el nivel de madurez digital y la resistencia al cambio.
+      "En la cabeza" indica alto riesgo y alta oportunidad. Excel indica alguien más ordenado pero
+      con límites claros. Una app indica que ya pagó antes por soluciones.
+    </div>
+    <div class="tips-title">Tips por respuesta</div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Si dice "en la cabeza":</strong> "¿Y qué pasa si usted se enferma un día — quién sabe dónde está todo?" (activa el miedo a perder control).</div>
+    </div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Si dice "cuaderno":</strong> "¿Y si se moja o se pierde el cuaderno?" — luego: "¿Cuánto tiempo le toma buscar un dato específico?"</div>
+    </div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text"><strong>Si dice "Excel":</strong> "¿Y lo actualiza en tiempo real o lo hace al final del día?" La mayoría admite que no lo actualiza.</div>
+    </div>
+    <div class="tip-item ojo">
+      <span class="tip-icon">👀</span>
+      <div class="tip-text"><strong>Si usa una app:</strong> pregunta cuál es y cuánto paga. Esto define el techo de precio y la competencia directa.</div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECCIÓN C: TECNOLOGÍA -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-label">
+    C · Tecnología y disposición
+    <span class="section-time">· ~2 min</span>
+  </div>
+
+  <!-- P6 -->
+  <div class="pregunta-card">
+    <div class="pregunta-header">
+      <span class="pregunta-num">P6 de 9</span>
+      <div class="pregunta-titulo">¿Qué dispositivos usa en el negocio?</div>
+      <span class="tiempo-badge">~40 seg</span>
+    </div>
+    <div class="script-box">
+      "¿Qué equipos tiene en el negocio? ¿Celular, computador, tableta, caja registradora,
+      impresora de tiquetes…? Cuénteme lo que tenga aunque no lo use para el negocio."
+    </div>
+    <div class="por-que">
+      <strong>Por qué preguntamos:</strong> Define el ecosistema tecnológico disponible. Si solo tiene
+      celular, la solución debe ser 100% móvil y offline. Si tiene POS o impresora, hay oportunidad
+      de integración y ticket físico.
+    </div>
+    <div class="tips-title">Tips</div>
+    <div class="tip-item ojo">
+      <span class="tip-icon">👀</span>
+      <div class="tip-text">Mira alrededor del local — a veces el cliente no menciona lo que tiene porque no lo asocia con "tecnología para el negocio" (ej: una pantalla de TV).</div>
+    </div>
+  </div>
+
+  <!-- P7 -->
+  <div class="pregunta-card">
+    <div class="pregunta-header">
+      <span class="pregunta-num">P7 de 9</span>
+      <div class="pregunta-titulo">¿Qué tan cómodo se siente usando el celular para el negocio?</div>
+      <span class="tiempo-badge">~30 seg</span>
+    </div>
+    <div class="script-box">
+      "¿Qué tan cómodo se siente usando el celular para cosas del negocio?
+      ¿Lo usa seguido — WhatsApp, redes, apps — o prefiere no depender mucho del teléfono?"
+    </div>
+    <div class="por-que">
+      <strong>Por qué preguntamos:</strong> Determina la curva de adopción esperada. Un dueño que usa
+      WhatsApp Business y redes sociales adoptará una app nueva sin fricción. Quien apenas llama,
+      necesita una interfaz mínima de 1-2 botones.
+    </div>
+    <div class="tips-title">Tips</div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">Si dice que usa WhatsApp para coordinar con clientes o empleados, ya validaste que hay un hábito digital — solo falta canalizarlo mejor.</div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- VARITA MÁGICA -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-label" style="color:#b45309; border-bottom-color:#fde68a;">
+    ✨ La pregunta de oro
+    <span class="section-time">· ~2 min</span>
+  </div>
+
+  <!-- P8 -->
+  <div class="pregunta-card estrella">
+    <div class="pregunta-header">
+      <span class="pregunta-num">P8 de 9 ✨</span>
+      <div class="pregunta-titulo">Si tuviera una varita mágica, ¿qué le quitaría o mejoraría a su negocio HOY?</div>
+      <span class="tiempo-badge">~2 min</span>
+    </div>
+    <div class="script-box">
+      "Última pregunta de fondo, y es la más importante para nosotros.
+      Si tuviera una varita mágica y pudiera cambiar <em>una sola cosa</em> de su negocio hoy mismo —
+      ¿qué sería? No tiene que ser tecnología. Puede ser cualquier cosa."
+    </div>
+    <div class="por-que">
+      <strong>Por qué preguntamos:</strong> Esta pregunta desbloquea el deseo real sin el filtro
+      de "eso no existe" o "eso es muy caro". Las respuestas son el brief perfecto para el producto.
+      Frecuentemente revelan un dolor que no estaba en ninguna opción anterior.
+    </div>
+    <div class="tips-title">Cómo facilitar una buena respuesta</div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">Si se queda en silencio, ayúdalo: <em>"Por ejemplo — algunos nos dicen que quieren saber exactamente cuánto ganaron esta semana, o que los clientes les paguen a tiempo, o que sus empleados no lleguen tarde…"</em></div>
+    </div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">Si da una respuesta muy corta, profundiza: <em>"¿Y eso cómo le afecta ahora? ¿Qué pasa cuando eso no funciona bien?"</em></div>
+    </div>
+    <div class="tip-item ojo">
+      <span class="tip-icon">👀</span>
+      <div class="tip-text"><strong>Escribe textual lo que diga.</strong> Las palabras exactas del cliente son el copy de marketing del producto.</div>
+    </div>
+    <div class="tip-item objecion">
+      <span class="tip-icon">❌</span>
+      <div class="tip-text">
+        <strong>"No sé, todo está bien"</strong>
+        <div class="respuesta-modelo">
+          "Imagínese que se va de vacaciones 2 semanas. ¿Qué es lo que más le preocupa
+          que pueda salir mal mientras no está?"
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- DISPOSICIÓN DE PAGO -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-label">
+    Disposición de inversión
+    <span class="section-time">· ~1 min</span>
+  </div>
+
+  <!-- P9 -->
+  <div class="pregunta-card">
+    <div class="pregunta-header">
+      <span class="pregunta-num">P9 de 9</span>
+      <div class="pregunta-titulo">¿Pagaría por una app que resuelva ese problema?</div>
+      <span class="tiempo-badge">~1 min</span>
+    </div>
+    <div class="script-box">
+      "Para cerrar — si existiera una herramienta que le resolviera exactamente
+      ese problema que me contó, ¿estaría dispuesto a pagar por ella?
+      <em>Ojo, no le estoy vendiendo nada ahora</em> — es para saber cómo diseñarla."
+    </div>
+    <div class="por-que">
+      <strong>Por qué preguntamos:</strong> Valida willingness to pay (WTP). La frase "no le estoy
+      vendiendo nada" reduce la resistencia. Si el cliente pregunta el precio, es señal de interés real.
+    </div>
+    <div class="tips-title">Cómo manejar la conversación de precio</div>
+    <div class="tip-item objecion">
+      <span class="tip-icon">❌</span>
+      <div class="tip-text">
+        <strong>"¿Cuánto costaría?"</strong>
+        <div class="respuesta-modelo">
+          "Eso está por definirse — por eso hacemos este diagnóstico. Pero para que tenga
+          un referente: estamos pensando en algo menor a lo que gasta en un plan de datos al mes.
+          ¿A ese precio valdría la pena si le ahorra tiempo y errores?"
+        </div>
+      </div>
+    </div>
+    <div class="tip-item objecion">
+      <span class="tip-icon">❌</span>
+      <div class="tip-text">
+        <strong>"Prefiero que sea gratis"</strong>
+        <div class="respuesta-modelo">
+          "Entiendo — la mayoría piensa eso al principio. Pero cuénteme:
+          si hoy un error en el inventario le cuesta $50.000 al mes, ¿pagaría $15.000
+          por evitar eso? Eso es lo que queremos lograr."
+        </div>
+      </div>
+    </div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">
+        Si dice "sí, si realmente me ayuda" — pregunte cuánto máximo pagaría al mes.
+        Esa cifra es el techo real de monetización para ese segmento.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- CONTACTO -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-label">
+    Datos de contacto (opcional)
+    <span class="section-time">· ~30 seg</span>
+  </div>
+
+  <div class="bloque">
+    <div class="bloque-title"><span class="icon">📱</span> Pedir contacto sin presión</div>
+    <div class="script-box">
+      "Una última cosa — si quiere ser de los primeros en probar la herramienta cuando esté lista,
+      me puede dar su nombre, el del negocio y un WhatsApp.
+      <em>No compartimos sus datos con nadie</em> — solo le avisamos cuando esté lista."
+    </div>
+    <div class="tip-item argumento">
+      <span class="tip-icon">💡</span>
+      <div class="tip-text">Si duda: <em>"No lo llamamos para venderle — solo para avisarle. Y si no quiere que lo contactemos, igual nos ayudó con sus respuestas."</em></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- CIERRE -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-label">
+    Cierre de la entrevista
+    <span class="section-time">· ~1 min</span>
+  </div>
+
+  <div class="cierre-card">
+    <h3>🎯 Cierre profesional</h3>
+    <div class="script-box">
+      "Muchas gracias — esto es exactamente lo que necesitábamos. Con sus respuestas,
+      y las de otros negocios de la zona, vamos a poder diseñar algo que realmente les funcione.
+      <em>Le agradezco mucho su tiempo.</em> Si tiene alguna pregunta o quiere saber cómo avanzamos,
+      aquí tiene mi contacto. ¡Que le vaya muy bien con el negocio!"
+    </div>
+
+    <h3 style="margin-top:16px;">🚦 Señales que indican cliente caliente</h3>
+    <div class="senal-grid">
+      <div class="senal-item">
+        <span class="senal-icon">🔴</span>
+        <div class="senal-text"><strong>Preguntó el precio</strong> — interés real, agenda un seguimiento.</div>
+      </div>
+      <div class="senal-item">
+        <span class="senal-icon">🔴</span>
+        <div class="senal-text"><strong>Contó una historia de dolor específico</strong> — ese es el caso de uso del MVP.</div>
+      </div>
+      <div class="senal-item">
+        <span class="senal-icon">🟡</span>
+        <div class="senal-text"><strong>Dio todos los datos de contacto</strong> — considera seguimiento en 2-3 semanas.</div>
+      </div>
+      <div class="senal-item">
+        <span class="senal-icon">🟡</span>
+        <div class="senal-text"><strong>Habló más de 5 min sobre un dolor</strong> — ese es el problema prioritario a resolver.</div>
+      </div>
+      <div class="senal-item">
+        <span class="senal-icon">⚪</span>
+        <div class="senal-text"><strong>Respuestas cortas y apresurado</strong> — anota los datos, no insistas hoy.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN IMPRIMIR -->
+  <button class="btn-print" onclick="window.print()">🖨️ Imprimir este guion</button>
+
+</div>
+<script>
+  // ── PIN almacenado como hash SHA-256 ──
+  // PIN por defecto: 7283  (cámbialo: node -e "require('crypto').createHash('sha256').update('TUPIN').digest('hex')")
+  // SHA-256 de "7283" = "b5b1e3e88bbeaf69abb1fcc96fce4abd9baed1d855d8e33e99c74cde3b51fc76"
+  const PIN_HASH = '98d9658d98764dbe135b316f52a98116b4b02f9d7e57212aa86335c42a58539a';
+  const MAX_INTENTOS = 5;
+  const BLOQUEO_MS   = 5 * 60 * 1000; // 5 minutos
+
+  // ── Al cargar: comprobar sesión activa ──
+  (function init() {
+    const sesion = sessionStorage.getItem('guion_auth');
+    if (sesion === 'ok') {
+      document.getElementById('pantalla-acceso').style.display = 'none';
+      return;
+    }
+
+    // Comprobar bloqueo por intentos fallidos
+    const bloqueado = localStorage.getItem('guion_bloqueo');
+    if (bloqueado) {
+      const restante = parseInt(bloqueado) - Date.now();
+      if (restante > 0) {
+        bloquearUI(restante);
+        return;
+      } else {
+        localStorage.removeItem('guion_bloqueo');
+        localStorage.removeItem('guion_intentos');
+      }
+    }
+
+    // Configurar navegación entre campos PIN
+    const campos = ['p0','p1','p2','p3'];
+    campos.forEach((id, i) => {
+      const el = document.getElementById(id);
+      el.addEventListener('input', () => {
+        el.value = el.value.replace(/\D/g, '');
+        if (el.value.length === 1 && i < 3) {
+          document.getElementById(campos[i + 1]).focus();
+        }
+        if (i === 3 && el.value.length === 1) verificarPin();
+      });
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && el.value === '' && i > 0) {
+          document.getElementById(campos[i - 1]).focus();
+        }
+        if (e.key === 'Enter') verificarPin();
+      });
+    });
+
+    document.getElementById('p0').focus();
+  })();
+
+  // ── Calcular hash SHA-256 ──
+  async function sha256(texto) {
+    const enc = new TextEncoder();
+    const buf = await crypto.subtle.digest('SHA-256', enc.encode(texto));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  // ── Verificar PIN ingresado ──
+  async function verificarPin() {
+    const campos = ['p0','p1','p2','p3'];
+    const pin = campos.map(id => document.getElementById(id).value).join('');
+    if (pin.length < 4) return;
+
+    const hash = await sha256(pin);
+
+    if (hash === PIN_HASH) {
+      sessionStorage.setItem('guion_auth', 'ok');
+      localStorage.removeItem('guion_intentos');
+      localStorage.removeItem('guion_bloqueo');
+      document.getElementById('pantalla-acceso').style.display = 'none';
+    } else {
+      // Registrar intento fallido
+      let intentos = parseInt(localStorage.getItem('guion_intentos') || '0') + 1;
+      localStorage.setItem('guion_intentos', intentos);
+
+      campos.forEach(id => {
+        const el = document.getElementById(id);
+        el.value = '';
+        el.classList.add('error');
+        setTimeout(() => el.classList.remove('error'), 600);
+      });
+
+      if (intentos >= MAX_INTENTOS) {
+        const hasta = Date.now() + BLOQUEO_MS;
+        localStorage.setItem('guion_bloqueo', hasta);
+        bloquearUI(BLOQUEO_MS);
+      } else {
+        const restantes = MAX_INTENTOS - intentos;
+        document.getElementById('accesoError').style.display = 'block';
+        document.getElementById('accesoIntentos').textContent =
+          restantes === 1 ? 'Último intento antes del bloqueo.' : `${restantes} intentos restantes.`;
+        setTimeout(() => document.getElementById('p0').focus(), 100);
+      }
+    }
+  }
+
+  // ── Bloquear UI por intentos excedidos ──
+  function bloquearUI(msRestantes) {
+    const btn = document.querySelector('.btn-acceso');
+    const campos = ['p0','p1','p2','p3'];
+    campos.forEach(id => { document.getElementById(id).disabled = true; });
+    btn.disabled = true;
+    btn.style.background = '#aaa';
+    document.getElementById('accesoError').style.display = 'none';
+
+    const intervalo = setInterval(() => {
+      const bloqueado = localStorage.getItem('guion_bloqueo');
+      if (!bloqueado) { clearInterval(intervalo); return; }
+      const restante = parseInt(bloqueado) - Date.now();
+      if (restante <= 0) {
+        clearInterval(intervalo);
+        localStorage.removeItem('guion_bloqueo');
+        localStorage.removeItem('guion_intentos');
+        campos.forEach(id => { document.getElementById(id).disabled = false; });
+        btn.disabled = false;
+        btn.style.background = '';
+        document.getElementById('accesoIntentos').textContent = '';
+        document.getElementById('p0').focus();
+      } else {
+        const min = Math.ceil(restante / 60000);
+        document.getElementById('accesoIntentos').textContent =
+          `Bloqueado por ${min} min${min !== 1 ? 'utos' : 'uto'}.`;
+      }
+    }, 1000);
+  }
+</script>
+</body>
+</html>
