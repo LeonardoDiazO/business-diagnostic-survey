@@ -338,6 +338,7 @@ textarea:focus { border-color: #E94560; background: #fff; }
 .field-group { display: flex; flex-direction: column; gap: 5px; }
 .field-group label { font-size: 11px; color: #888; font-weight: 500; }
 .field-group input {
+  width: 100%;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 10px 12px;
@@ -470,7 +471,7 @@ textarea:focus { border-color: #E94560; background: #fff; }
 }
 .btn-print-encuesta:hover { background: #e0e0e0; }
 
-@media (max-width: 380px) {
+@media (max-width: 480px) {
   .contact-grid { grid-template-columns: 1fr; }
 }
 
